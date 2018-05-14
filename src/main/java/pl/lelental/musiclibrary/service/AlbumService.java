@@ -14,7 +14,7 @@ import java.util.List;
 public class AlbumService implements IAlbumService {
 
     @Autowired
-    private IAlbumRepository albumRepository;
+    IAlbumRepository albumRepository;
 
     @Override
     public Album findById(long id) {

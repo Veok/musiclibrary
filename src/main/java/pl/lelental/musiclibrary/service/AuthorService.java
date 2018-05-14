@@ -12,7 +12,7 @@ import pl.lelental.musiclibrary.repository.IAuthorRepository;
 public class AuthorService implements IAuthorService {
 
     @Autowired
-    private IAuthorRepository authorRepository;
+    IAuthorRepository authorRepository;
 
     @Override
     public Author findById(long id) {

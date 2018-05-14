@@ -1,5 +1,7 @@
 package pl.lelental.musiclibrary.service;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,27 +26,54 @@ public class AuthorServiceTest {
 
     @Autowired
     private AuthorService authorService;
+    @Autowired
+    private AlbumService albumService;
 
     private Author author;
 
+    @Before
+    public void setUp() {
+        author = new Author();
+        author.setName("IRA");
+        author.setDateOfCreation(new Date(1995, 3, 3));
+
+        Album album1 = new Album();
+        album1.setAuthor(author);
+        album1.setName("Test");
+        album1.setDateOfPublish(new Date(1999, 3, 3));
+
+        Album album2 = new Album();
+        album2.setName("Test2");
+        album2.setDateOfPublish(new Date(2000, 1, 1));
+        album2.setAuthor(author);
+
+        List<Album> albums = new ArrayList<>();
+        albums.add(album1);
+        albums.add(album2);
+
+        author.setAlbumList(albums);
+        authorService.saveAuthor(author);
+    }
+
+    @After
+    public void tearDown() {
+        authorService.authorRepository.deleteAll();
+        albumService.albumRepository.deleteAll();
+    }
+
     @Test
     public void testAdding() {
-        testData("1");
         assertTrue(authorService.saveAuthor(author));
     }
 
     @Test
     public void testDelete() {
-        testData("2");
-        assertTrue(authorService.saveAuthor(author));
         Author retrievedAuthor = authorService.findByName(author.getName());
         assertTrue(authorService.deleteAuthor(retrievedAuthor.getId()));
     }
 
     @Test
     public void testUpdate() {
-        testData("3");
-        assertTrue(authorService.saveAuthor(author));
         Author authorWithNewName = new Author();
         Author retrievedAuthor = authorService.findByName(author.getName());
         authorWithNewName.setId(retrievedAuthor.getId());
@@ -54,22 +83,16 @@ public class AuthorServiceTest {
         assertTrue(authorService.updateAuhtor(authorWithNewName));
     }
 
-
-    private void testData(String name) {
-        author = new Author();
-        author.setName("IRA" + name);
-        author.setDateOfCreation(new Date(1995, 3, 3));
-        Album album1 = new Album();
-        album1.setAuthor(author);
-        album1.setName("Test" + name);
-        album1.setDateOfPublish(new Date(1999, 3, 3));
-        Album album2 = new Album();
-        album2.setName("Test2" + name);
-        album2.setDateOfPublish(new Date(2000, 1, 1));
-        album2.setAuthor(author);
-        List<Album> albums = new ArrayList<>();
-        albums.add(album1);
-        albums.add(album2);
-        author.setAlbumList(albums);
+    @Test
+    public void testFindByName() {
+        assertEquals(author.getName(), authorService.findByName(author.getName()).getName());
     }
+
+    @Test
+    public void testFindById(){
+        author = authorService.findByName(author.getName());
+        assertEquals(author.getId(), authorService.findById(author.getId()).getId());
+    }
+
+
 }

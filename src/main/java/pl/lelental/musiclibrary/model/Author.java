@@ -22,4 +22,5 @@ public class Author {
     private Date dateOfCreation;
     @OneToMany(cascade = CascadeType.ALL)
     private List<Album> albumList;
+    private int countOfAuthorsAlbumsWithGrammyAward;
 }

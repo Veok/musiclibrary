@@ -15,7 +15,8 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Paweł Lelental
@@ -36,6 +37,7 @@ public class AuthorServiceTest {
         author = new Author();
         author.setName("IRA");
         author.setDateOfCreation(new Date(1995, 3, 3));
+        author.setCountOfAuthorsAlbumsWithGrammyAward(2);
 
         Album album1 = new Album();
         album1.setAuthor(author);
@@ -78,6 +80,7 @@ public class AuthorServiceTest {
         Author retrievedAuthor = authorService.findByName(author.getName());
         authorWithNewName.setId(retrievedAuthor.getId());
         authorWithNewName.setName("Rammstein");
+        authorWithNewName.setCountOfAuthorsAlbumsWithGrammyAward(retrievedAuthor.getCountOfAuthorsAlbumsWithGrammyAward());
         authorWithNewName.setDateOfCreation(retrievedAuthor.getDateOfCreation());
         authorWithNewName.setAlbumList(retrievedAuthor.getAlbumList());
         assertTrue(authorService.updateAuhtor(authorWithNewName));
@@ -89,9 +92,9 @@ public class AuthorServiceTest {
     }
 
     @Test
-    public void testFindById(){
-        author = authorService.findByName(author.getName());
-        assertEquals(author.getId(), authorService.findById(author.getId()).getId());
+    public void testFindById() {
+        Author author3 = authorService.findByName(author.getName());
+        assertEquals(author.getId(), authorService.findById(author3.getId()).getId());
     }
 
 

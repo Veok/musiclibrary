@@ -16,4 +16,5 @@ public interface IAuthorService {
     boolean updateAuhtor(Author author);
 
     boolean deleteAuthor(long id);
+
 }

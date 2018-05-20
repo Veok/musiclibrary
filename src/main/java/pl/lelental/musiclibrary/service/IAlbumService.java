@@ -11,8 +11,6 @@ public interface IAlbumService {
 
     Album findById(long id);
 
-    List<Album> findByAuthorId(long authorId);
-
     Album findByName(String name);
 
     boolean saveAlbum(Album album);
@@ -20,4 +18,6 @@ public interface IAlbumService {
     boolean updateAlbum(Album album);
 
     boolean deleteAlbum(long id);
+
+    void updateAlbumWithGrammyAward(long albumId);
 }

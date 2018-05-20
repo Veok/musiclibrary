@@ -42,6 +42,7 @@ public class AuthorService implements IAuthorService {
             retrievedAuthor.setAlbumList(author.getAlbumList());
             retrievedAuthor.setName(author.getName());
             retrievedAuthor.setDateOfCreation(author.getDateOfCreation());
+            retrievedAuthor.setCountOfAuthorsAlbumsWithGrammyAward(author.getCountOfAuthorsAlbumsWithGrammyAward());
             authorRepository.save(retrievedAuthor);
             return true;
         } catch (Exception e) {
@@ -58,4 +59,7 @@ public class AuthorService implements IAuthorService {
             return false;
         }
     }
+
+
+
 }

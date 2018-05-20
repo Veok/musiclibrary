@@ -20,7 +20,7 @@ public class Author {
     private long id;
     private String name;
     private Date dateOfCreation;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "authorId")
     private List<Album> albumList;
     private int countOfAuthorsAlbumsWithGrammyAward;
 }

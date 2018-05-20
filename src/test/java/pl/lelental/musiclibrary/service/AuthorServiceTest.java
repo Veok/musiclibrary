@@ -38,29 +38,31 @@ public class AuthorServiceTest {
         author.setName("IRA");
         author.setDateOfCreation(new Date(1995, 3, 3));
         author.setCountOfAuthorsAlbumsWithGrammyAward(2);
+        authorService.saveAuthor(author);
+        author = authorService.findByName("IRA");
 
         Album album1 = new Album();
-        album1.setAuthor(author);
+        album1.setAuthorId(author.getId());
         album1.setName("Test");
         album1.setDateOfPublish(new Date(1999, 3, 3));
 
         Album album2 = new Album();
         album2.setName("Test2");
         album2.setDateOfPublish(new Date(2000, 1, 1));
-        album2.setAuthor(author);
+        album2.setAuthorId(author.getId());
 
         List<Album> albums = new ArrayList<>();
         albums.add(album1);
         albums.add(album2);
 
         author.setAlbumList(albums);
-        authorService.saveAuthor(author);
+        authorService.updateAuhtor(author);
     }
 
     @After
     public void tearDown() {
         authorService.authorRepository.deleteAll();
-        albumService.albumRepository.deleteAll();
+       // albumService.albumRepository.deleteAll();
     }
 
     @Test

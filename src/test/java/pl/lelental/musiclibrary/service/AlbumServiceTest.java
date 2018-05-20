@@ -45,11 +45,14 @@ public class AlbumServiceTest {
         author.setDateOfCreation(new Date(1994, 1, 1));
         author.setCountOfAuthorsAlbumsWithGrammyAward(0);
 
-        album.setAuthor(author);
+        authorService.saveAuthor(author);
+        author = authorService.findByName("MUSE");
+
+        album.setAuthorId(author.getId());
         album.setName("DRONES");
         album.setDateOfPublish(new Date(2015, 6, 8));
 
-        album2.setAuthor(author);
+        album2.setAuthorId(author.getId());
         album2.setName("ABSOLUTON");
         album2.setDateOfPublish(new Date(2003, 1, 1));
 
@@ -57,14 +60,16 @@ public class AlbumServiceTest {
         albums.add(album);
         albums.add(album2);
 
+        albumService.saveAlbum(album);
+        albumService.saveAlbum(album2);
         author.setAlbumList(albums);
-        authorService.saveAuthor(author);
+        authorService.updateAuhtor(author);
     }
+
 
     @After
     public void tearDown() {
         authorService.authorRepository.deleteAll();
-        albumService.albumRepository.deleteAll();
     }
 
 
@@ -86,7 +91,7 @@ public class AlbumServiceTest {
         albumWithNewName.setId(retrievedAlbum.getId());
         albumWithNewName.setName("BLACK HOLES");
         albumWithNewName.setDateOfPublish(retrievedAlbum.getDateOfPublish());
-        albumWithNewName.setAuthor(retrievedAlbum.getAuthor());
+        albumWithNewName.setAuthorId(retrievedAlbum.getAuthorId());
         albumWithNewName.setGrammyAward(retrievedAlbum.isGrammyAward());
         assertTrue(albumService.updateAlbum(albumWithNewName));
     }
@@ -107,8 +112,9 @@ public class AlbumServiceTest {
     public void testUpdateWithGrammy() {
         albumService.updateAlbumWithGrammyAward(album.getId());
         Album albumWithGrammy = albumService.findById(album.getId());
+        Author authorWithGrammy = authorService.findById(album.getAuthorId());
         assertTrue(albumWithGrammy.isGrammyAward());
-        assertEquals(1, albumWithGrammy.getAuthor().getCountOfAuthorsAlbumsWithGrammyAward());
+        assertEquals(1, authorWithGrammy.getCountOfAuthorsAlbumsWithGrammyAward());
     }
 
 

@@ -2,6 +2,7 @@ package pl.lelental.musiclibrary.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.lelental.musiclibrary.model.Album;
 import pl.lelental.musiclibrary.model.Author;
 import pl.lelental.musiclibrary.repository.IAlbumRepository;
@@ -43,7 +44,7 @@ public class AlbumService implements IAlbumService {
     public boolean updateAlbum(Album album) {
         try {
             Album retrievedAlbum = findById(album.getId());
-            retrievedAlbum.setAuthor(album.getAuthor());
+            retrievedAlbum.setAuthorId(album.getAuthorId());
             retrievedAlbum.setDateOfPublish(album.getDateOfPublish());
             retrievedAlbum.setName(album.getName());
             retrievedAlbum.setGrammyAward(album.isGrammyAward());
@@ -55,6 +56,7 @@ public class AlbumService implements IAlbumService {
     }
 
     @Override
+    @Transactional
     public boolean deleteAlbum(long id) {
         try {
             albumRepository.deleteById(id);
@@ -68,8 +70,8 @@ public class AlbumService implements IAlbumService {
     public void updateAlbumWithGrammyAward(long albumId) {
         Album album = findById(albumId);
         album.setGrammyAward(true);
-        Author author = album.getAuthor();
-        int countOfAwards = album.getAuthor().getCountOfAuthorsAlbumsWithGrammyAward();
+        Author author = authorService.findById(album.getAuthorId());
+        int countOfAwards = author.getCountOfAuthorsAlbumsWithGrammyAward();
         author.setCountOfAuthorsAlbumsWithGrammyAward(countOfAwards + 1);
         updateAlbum(album);
         authorService.updateAuhtor(author);

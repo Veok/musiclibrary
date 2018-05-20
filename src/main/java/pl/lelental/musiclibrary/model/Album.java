@@ -17,7 +17,6 @@ public class Album {
     private long id;
     private String name;
     private Date dateOfPublish;
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Author author;
+    private long authorId;
     boolean isGrammyAward;
 }
